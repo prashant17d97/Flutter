@@ -13,8 +13,28 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
+          primarySwatch: Colors.blue,
+          brightness: Brightness.light,
+          textTheme: const TextTheme(
+            headline1: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            headline2: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            subtitle1: TextStyle(fontSize: 16, fontWeight: FontWeight.normal),
+            subtitle2: TextStyle(fontSize: 14, fontWeight: FontWeight.normal),
+            bodyText1: TextStyle(fontSize: 16, fontWeight: FontWeight.normal),
+            bodyText2: TextStyle(fontSize: 14, fontWeight: FontWeight.normal),
+          )),
+      darkTheme: ThemeData(
+          primarySwatch: Colors.blue,
+          brightness: Brightness.dark,
+          textTheme: const TextTheme(
+            headline1: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            headline2: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            subtitle1: TextStyle(fontSize: 16, fontWeight: FontWeight.normal),
+            subtitle2: TextStyle(fontSize: 14, fontWeight: FontWeight.normal),
+            bodyText1: TextStyle(fontSize: 16, fontWeight: FontWeight.normal),
+            bodyText2: TextStyle(fontSize: 14, fontWeight: FontWeight.normal),
+          )),
+      themeMode: ThemeMode.system,
       home: const MyHomePage(title: 'Home Page'),
     );
   }
@@ -41,10 +61,20 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(0),
+        child: AppBar(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+        ),
       ),
-      body: Center(
+      body: SingleChildScrollView(
+        /*decoration: const BoxDecoration(
+            image: DecorationImage(
+              image: NetworkImage("https://images.ui8.net/uploads/frame-6_1661537769747.png"),
+              fit: BoxFit.cover,
+            ),
+          ),*/
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           verticalDirection: VerticalDirection.down,
@@ -64,42 +94,71 @@ class _MyHomePageState extends State<MyHomePage> {
                     // hoverElevation: 2.5,
                     child: const Icon(Icons.add),
                   ),
-
                 ],
               ),
             ),
-            AlertDialog(
-              title: const Text('Very, very large title'),
-              content: const Text('Very, very large content'),
-              actions: <Widget>[
-                TextButton(child: const Text('Cancel'), onPressed: () {
-                  final snackBar = SnackBar(
-                    content: const Text('Yay! A SnackBar!'),
-                    action: SnackBarAction(
-                      label: 'Undo',
-                      onPressed: () {
-                        // Some code to undo the change.
-                      },
-                    ),
-                  );
-                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
-
-                }),
-                TextButton(child: const Text('Accept'), onPressed: () {
-                  final snackBar = SnackBar(
-                    content: const Text('Yay! A SnackBar!'),
-                    action: SnackBarAction(
-                      label: 'Undo',
-                      onPressed: () {
-                        // Some code to undo the change.
-                      },
-                    ),
-                  );
-                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
+            ElevatedButton(
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  barrierLabel: "Prashant",
+                  barrierColor: Colors.black54,
+                  useSafeArea: false,
+                  builder: (context) {
+                    return AlertDialog(
+                      title: const Text('Alert'),
+                      content: Text('This is an alert message.',
+                          style: Theme.of(context).textTheme.headline1),
+                      shape: const RoundedRectangleBorder(
+                          borderRadius:
+                              BorderRadius.all(Radius.circular(32.0))),
+                      actions: [
+                        TextButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                          child: const Text('Close'),
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                          child: const Text('Close'),
+                        ),
+                      ],
+                    );
+                  },
+                );
+              },
+              child: const Text('Show Alert'),
+            ),
+            Image.network(
+              "https://images.ui8.net/uploads/frame-6_1661537769747.png",
+              width: MediaQuery.of(context).size.width,
+              fit: BoxFit.fill,
+              loadingBuilder: (context, child, loadingProgress) {
+                if (loadingProgress == null) {
+                  return child;
                 }
-                ),
-              ],
-            )
+
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              },
+            ),
+            Image.network(
+              "https://images.ui8.net/uploads/frame-7_1661537776017.png",
+              width: MediaQuery.of(context).size.width,
+              fit: BoxFit.fill,
+              loadingBuilder: (context, child, loadingProgress) {
+                if (loadingProgress == null) {
+                  return child;
+                }
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              },
+            ),
           ],
         ),
       ), // This trailing comma makes auto-formatting nicer for build methods.
